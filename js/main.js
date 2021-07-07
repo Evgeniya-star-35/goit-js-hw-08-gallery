@@ -1,12 +1,12 @@
+'use strict';
 import galleryItems from './script.js';
 const refs = {
   galleryEl: document.querySelector('.js-gallery'),
-  itemGalleryEl: document.querySelector('.gallery__item'),
-  divLightboxEl: document.querySelector('.js-lightbox'),
-  divLightboxOverlay: document.querySelector('.lightbox__overlay'),
-  divLightboxContent: document.querySelector('.lightbox__content'),
-  lightboxImage: document.querySelector('.lightbox__image'),
-  btnModalClose: document.querySelector('[data-action="close-lightbox]'),
+  btnModalOpen: document.createElement('img'),
+  backdrop: document.querySelector('.js-lightbox'),
+  modal: document.querySelector('.lightbox__content'),
+  lightboxImg: document.querySelector('.lightbox__image'),
+  btnModalClose: document.querySelector('[data-action="close-lightbox"]'),
 };
 
 const createGallery = ({ preview, original, description }) =>
@@ -17,20 +17,24 @@ const showGallery = galleryItems.reduce(
   '',
 );
 refs.galleryEl.insertAdjacentHTML('beforeend', showGallery);
-refs.galleryEl.addEventListener('click', onOpenModal);
-// refs.btnModalClose.addEventListener('click', onCloseModal);
-function onOpenModal(event) {
-  event.preventDefault();
-  console.log(event.currentTarget);
-  refs.divLightboxEl.classList.add('is-open');
-  refs.divLightboxEl.classList.add('lightbox__content');
 
-  // const target = event.target;
-  // console.log(target);
-  // if (target.nodeName !== 'LI') {
-  //   return;
-  // }
+refs.galleryEl.addEventListener('click', onClickGallery);
+// refs.btnModalClose.addEventListener('click', onCloseModal);
+// refs.modal.addEventListener('click', onClickCloseLightbox);
+function onClickGallery(event) {
+  event.preventDefault();
+  const target = event.target;
+
+  if (target.nodeName !== 'IMG') {
+    return;
+  }
+  if (target.nodeName === 'IMG') {
+    refs.backdrop.classList.add('is-open');
+    refs.lightboxImg.src = target.getAttribute('data-source');
+    refs.lightboxImg.alt = target.alt;
+  }
+  // window.addEventListener('keyup', clickKey);
 }
-// function onCloseModal() {
-//   refs.divLightboxEl.classList.remove('is-open');
-// }
+refs.btnModalClose.onclick = function onCloseModal(event) {
+  return refs.backdrop.classList.remove('is-open');
+};
