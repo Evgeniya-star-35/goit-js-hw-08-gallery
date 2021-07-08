@@ -6,6 +6,7 @@ const refs = {
   backdrop: document.querySelector('.js-lightbox'),
   modal: document.querySelector('.lightbox__content'),
   lightboxImg: document.querySelector('.lightbox__image'),
+
   btnModalClose: document.querySelector('[data-action="close-lightbox"]'),
 };
 
@@ -19,7 +20,7 @@ const showGallery = galleryItems.reduce(
 refs.galleryEl.insertAdjacentHTML('beforeend', showGallery);
 
 refs.galleryEl.addEventListener('click', onClickGallery);
-// refs.btnModalClose.addEventListener('click', onCloseModal);
+
 // refs.modal.addEventListener('click', onClickCloseLightbox);
 function onClickGallery(event) {
   event.preventDefault();
@@ -30,7 +31,8 @@ function onClickGallery(event) {
   }
   if (target.nodeName === 'IMG') {
     refs.backdrop.classList.add('is-open');
-    refs.lightboxImg.src = target.getAttribute('data-source');
+    // refs.lightboxImg.src = target.getAttribute('data-source');
+    refs.lightboxImg.src = target.dataset.source;
     refs.lightboxImg.alt = target.alt;
   }
   // window.addEventListener('keyup', clickKey);
