@@ -38,5 +38,6 @@ function onClickGallery(event) {
   // window.addEventListener('keyup', clickKey);
 }
 refs.btnModalClose.onclick = function onCloseModal(event) {
+  event.preventDefault();
   return refs.backdrop.classList.remove('is-open');
 };
