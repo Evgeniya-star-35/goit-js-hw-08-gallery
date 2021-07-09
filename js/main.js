@@ -6,7 +6,7 @@ const refs = {
   backdrop: document.querySelector('.js-lightbox'),
   modal: document.querySelector('.lightbox__content'),
   lightboxImg: document.querySelector('.lightbox__image'),
-
+  lightboxOverlay: document.querySelector('div.lightbox__overlay'),
   btnModalClose: document.querySelector('[data-action="close-lightbox"]'),
 };
 
@@ -39,5 +39,11 @@ function onClickGallery(event) {
 }
 refs.btnModalClose.onclick = function onCloseModal(event) {
   event.preventDefault();
-  return refs.backdrop.classList.remove('is-open');
+  refs.backdrop.classList.remove('is-open');
+  // refs.lightboxImg.src = '';
+  // refs.lightboxImg.alt = '';
+  refs.lightboxImg.src.innerHTML = '';
+};
+refs.lightboxOverlay.onclick = function onCloseModalOverlay() {
+  refs.backdrop.classList.remove('is-open');
 };
