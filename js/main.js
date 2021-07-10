@@ -9,23 +9,46 @@ const refs = {
   lightboxOverlay: document.querySelector('div.lightbox__overlay'),
   btnModalClose: document.querySelector('[data-action="close-lightbox"]'),
 };
+// ххххххххххххххххххххххххххххххххххххххххххххххххххххххххххххххххххххххххххххххххххххххххххххххххххххххх
 
-const createGallery = ({ preview, original, description }) =>
-  `<li class = gallery__item data-action="open-lightbox"><a class = gallery__link href = '${original}'><img class = gallery__image src = '${preview}'data-source = '${original}'
-   alt = '${description}'/></a></li>`;
-const showGallery = galleryItems.reduce(
-  (acc, item) => acc + createGallery(item),
-  '',
-);
-refs.galleryEl.insertAdjacentHTML('beforeend', showGallery);
+// const createGallery = ({ preview, original, description }) =>
+//   `<li class = gallery__item ><a class = gallery__link href = '${original}'><img class = gallery__image src = '${preview}'data-source = '${original}
+//   alt = '${description}'/></a></li>`;
+// const showGallery = galleryItems.reduce(
+//   (acc, item) => acc + createGallery(item),
+//   '',
+// );
+// refs.galleryEl.insertAdjacentHTML('beforeend', showGallery);
+// хххххххххххххххххххххххххххххххххххххххххххххххххххххххххххххххххххххххххххххх
+
+function createGallery(galleryItems) {
+  return galleryItems
+    .map(({ preview, original, description }) => {
+      return `<li class="gallery__item ><a class="gallery__link"
+      href="${original}"
+    >
+      <img
+        class="gallery__image"
+        src="${preview}"
+        data-source="${original}"
+        alt="${description}"
+      />
+    </a>
+  </li>`;
+    })
+    .join('');
+}
+
+const imgGallery = createGallery(galleryItems);
+
+refs.galleryEl.insertAdjacentHTML('beforeend', imgGallery);
 
 refs.galleryEl.addEventListener('click', onClickGalleryItem);
 
-// refs.modal.addEventListener('click', onClickCloseLightbox);
-function onClickGalleryItem(event) {
-  event.preventDefault();
-  const target = event.target;
-
+function onClickGalleryItem(e) {
+  e.preventDefault();
+  window.addEventListener('keydown', onClickEsc);
+  const target = e.target;
   if (target.nodeName !== 'IMG') {
     return;
   }
@@ -36,18 +59,25 @@ function onClickGalleryItem(event) {
     refs.lightboxImg.alt = target.alt;
   }
 }
-refs.btnModalClose.onclick = function onCloseModal(event) {
-  event.preventDefault();
+function onClickCloseModal() {
   refs.backdrop.classList.remove('is-open');
+}
+
+refs.btnModalClose.onclick = e => {
+  window.removeEventListener('keydown', onClickEsc);
+
+  e.preventDefault();
+  onClickCloseModal();
   refs.lightboxImg.src = '';
   refs.lightboxImg.alt = '';
 };
-refs.lightboxOverlay.onclick = function onCloseModalOverlay(event) {
-  refs.backdrop.classList.remove('is-open');
+refs.lightboxOverlay.onclick = () => {
+  onClickCloseModal();
 };
-window.addEventListener('keydown', onclickEsc);
-function onclickEsc(event) {
-  if (event.code === 'Escape') {
-    refs.backdrop.classList.remove('is-open');
+
+function onClickEsc(e) {
+  const ESC_KEY_CODE = 'Escape';
+  if (e.code === ESC_KEY_CODE) {
+    onClickCloseModal();
   }
 }
