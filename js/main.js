@@ -23,7 +23,7 @@ const refs = {
 
 function createGallery(galleryItems) {
   return galleryItems
-    .map(({ preview, original, description }) => {
+    .map(({ preview, original, description }, index) => {
       return `<li class="gallery__item ><a class="gallery__link"
       href="${original}"
     >
@@ -31,7 +31,7 @@ function createGallery(galleryItems) {
         class="gallery__image"
         src="${preview}"
         data-source="${original}"
-        alt="${description}"
+        alt="${description}" data-index="${index}"
       />
     </a>
   </li>`;
@@ -57,6 +57,7 @@ function onClickGalleryItem(e) {
     // refs.lightboxImg.src = target.getAttribute('data-source');
     refs.lightboxImg.src = target.dataset.source;
     refs.lightboxImg.alt = target.alt;
+    refs.lightboxImg.dataset.index = e.target.dataset.index;
   }
 }
 function onClickCloseModal() {
@@ -82,4 +83,35 @@ function onClickEsc(e) {
   if (e.code === ESC_KEY_CODE) {
     onClickCloseModal();
   }
+}
+window.addEventListener('keydown', e => {
+  if (e.code === 'ArrowLeft') {
+    onArrowLeft();
+  }
+  if (e.code === 'ArrowRight') {
+    onArrowRight();
+  }
+});
+
+function onArrowLeft() {
+  let index = +refs.lightboxImg.dataset.index;
+
+  if (index === 0) {
+    newSrc(index, galleryItems.length - 1);
+    return;
+  }
+  newSrc(index, -1);
+}
+function onArrowRight() {
+  let index = +refs.lightboxImg.dataset.index;
+  if (index === galleryItems.length - 1) {
+    newSrc(0);
+    return;
+  }
+  newSrc(index, 1);
+}
+
+function newSrc(index, step = 0) {
+  refs.lightboxImg.dataset.index = `${index + step}`;
+  refs.lightboxImg.src = galleryItems[index + step].original;
 }
