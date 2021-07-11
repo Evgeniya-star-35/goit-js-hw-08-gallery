@@ -71,8 +71,10 @@ refs.btnModalClose.onclick = e => {
   refs.lightboxImg.src = '';
   refs.lightboxImg.alt = '';
 };
-refs.lightboxOverlay.onclick = () => {
-  onClickCloseModal();
+refs.lightboxOverlay.onclick = e => {
+  if (e.target === e.currentTarget) {
+    onClickCloseModal();
+  }
 };
 
 function onClickEsc(e) {
