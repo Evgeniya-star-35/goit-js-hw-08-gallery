@@ -2,7 +2,6 @@
 import galleryItems from './script.js';
 const refs = {
   galleryEl: document.querySelector('.js-gallery'),
-  btnModalOpen: document.createElement('img'),
   backdrop: document.querySelector('.js-lightbox'),
   modal: document.querySelector('.lightbox__content'),
   lightboxImg: document.querySelector('.lightbox__image'),
