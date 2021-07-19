@@ -43,6 +43,8 @@ const imgGallery = createGallery(galleryItems);
 refs.galleryEl.insertAdjacentHTML('beforeend', imgGallery);
 
 refs.galleryEl.addEventListener('click', onClickGalleryItem);
+refs.btnModalClose.addEventListener('click', onCloseButtonClick);
+refs.lightboxOverlay.addEventListener('click', onCloseOverlayClick);
 
 function onClickGalleryItem(e) {
   e.preventDefault();
@@ -63,19 +65,19 @@ function onClickCloseModal() {
   refs.backdrop.classList.remove('is-open');
 }
 
-refs.btnModalClose.onclick = e => {
+function onCloseButtonClick(e) {
   window.removeEventListener('keydown', onClickEsc);
 
   e.preventDefault();
   onClickCloseModal();
   refs.lightboxImg.src = '';
   refs.lightboxImg.alt = '';
-};
-refs.lightboxOverlay.onclick = e => {
+}
+function onCloseOverlayClick(e) {
   if (e.target === e.currentTarget) {
     onClickCloseModal();
   }
-};
+}
 
 function onClickEsc(e) {
   const ESC_KEY_CODE = 'Escape';
