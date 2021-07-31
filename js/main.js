@@ -68,7 +68,7 @@ function onClickCloseModal() {
 function onCloseButtonClick(e) {
   window.removeEventListener('keydown', onClickEsc);
 
-  e.preventDefault();
+  // e.preventDefault();
   onClickCloseModal();
   refs.lightboxImg.src = '';
   refs.lightboxImg.alt = '';
